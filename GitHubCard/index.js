@@ -38,8 +38,25 @@ let parentDiv = document.querySelector(".cards");
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "https://api.github.com/users/tetondan",
+  "https://api.github.com/users/dustinmyers",
+  "https://api.github.com/users/justsml",
+  "https://api.github.com/users/luishrd",
+  "https://api.github.com/users/bigknell"
+];
 
+for (let i = 0; i < followersArray.length; i++) {
+  axios.get(followersArray[i])
+  .then(response => {
+    let newCard = cardMaker(response.data);
+    document.querySelector(".cards").appendChild(newCard);
+    console.log(response);
+  })
+  .catch( err => {
+    console.log(error);
+  });
+}
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
