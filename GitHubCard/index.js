@@ -4,6 +4,16 @@
     https://api.github.com/users/<your name>
 */
 
+axios.get("https://api.github.com/users/travisgent")
+  .then(response => {
+    let newCard = cardMaker(response.data);
+    document.querySelector(".cards").appendChild(newCard);
+    console.log(response);
+  })
+  .catch( err => {
+    console.log(error);
+  });
+
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -16,7 +26,7 @@
   STEP 4: Pass the data received from Github into your function,
     and append the returned markup to the DOM as a child of .cards
 */
-
+let parentDiv = document.querySelector(".cards");
 /*
   STEP 5: Now that you have your own card getting added to the DOM, either
     follow this link in your browser https://api.github.com/users/<Your github name>/followers,
@@ -40,6 +50,7 @@ const followersArray = [];
         <h3 class="name">{users name}</h3>
         <p class="username">{users user name}</p>
         <p>Location: {users location}</p>
+
         <p>Profile:
           <a href={address to users github page}>{address to users github page}</a>
         </p>
@@ -49,6 +60,53 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker(data) {
+  let divCard = document.createElement("div");
+  divCard.setAttribute("class", "card");
+    let userImg = document.createElement("img");
+    userImg.src = data.avatar_url;
+    divCard.appendChild(userImg);
+
+    let divCardInfo = document.createElement("div");
+    divCardInfo.setAttribute("class", "card-info");
+    divCard.appendChild(divCardInfo);
+      let nameHThree = document.createElement("h3");
+      nameHThree.setAttribute("class", "name");
+      nameHThree.textContent = `${data.name}`;
+      divCardInfo.appendChild(nameHThree);
+
+      let userNameP = document.createElement("p");
+      userNameP.setAttribute("class", "username");
+      userNameP.textContent = `${data.login}`;
+      divCardInfo.appendChild(userNameP);
+
+      let locationP = document.createElement("p");
+      locationP.textContent = `Location: ${data.location}`;
+      divCardInfo.appendChild(locationP);
+
+      let profileP = document.createElement("p");
+      profileP.textContent = `Profile: `;
+      divCardInfo.appendChild(profileP);
+        let profileLink = document.createElement("a");
+        profileLink.textContent = `${data.html_url}`;
+        profileLink.href = `${data.html_url}`;
+        profileP.appendChild(profileLink);
+      
+      let followersP = document.createElement("p");
+      followersP.textContent = `Followers: ${data.followers}`;
+      divCardInfo.appendChild(followersP);
+
+      let followingP = document.createElement("p");
+      followingP.textContent = `Following: ${data.following}`;
+      divCardInfo.appendChild(followingP);
+
+      let bioP = document.createElement("p");
+      bioP.textContent = `Bio: ${data.bio}`;
+      divCardInfo.appendChild(bioP);
+
+      return divCard;
+}
 
 /*
   List of LS Instructors Github username's:
